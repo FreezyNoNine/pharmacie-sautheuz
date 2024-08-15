@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacie Sautheuz</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.css">
+    <link rel="icon" href="<%= drugs %>" type="image/x-icon">
+</head>
+
+<body class="bg-fixed bg-center bg-cover bg-small lg:bg-large">
+
+    <nav>
+
+        <div class="p-2 border border-slate-400 bg-slate-100">
+            <div class="container mx-auto">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <!-- Logo et adresse email -->
+                        <div class="font-semibold mx-7"><a href="#">pharmaciesautheuz@gmail.com</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="bg-white border">
+                <div class="container flex flex-wrap items-center justify-between mx-auto">
+
+                    <div class="flex items-center uppercase bg-center">
+                        <!-- Logo principal -->
+                        <img src="<%= logo %>" class="h-12">
+                    </div>
+
+                    <div class="flex flex-wrap items-center md:gap-4 ">
+
+                        <div class="flex items-center my-3 border border-green-400 rounded-lg ">
+                            <!-- Barre de recherche -->
+                            <input type="text" placeholder="Rechercher..." class="w-40 px-3 py-2 outline-none md:w-60">
+                            <button class="px-4 py-2 text-white bg-green-400 rounded-r-lg hover:bg-green-500">Rechercher</button>
+                        </div>
+
+                        <div>
+                            <!-- Bouton de menu pour les écrans mobiles -->
+                            <img id="menu-button" class="w-6 h-6 m-2 lg:hidden" src="/static_files/svgs/bars-black.svg" alt="menu-icon">
+                        </div>
+
+                    </div>
+
+                    <div class="hidden lg:block" id="menu">
+                        <div class="gap-10 lg:flex ">
+
+                            <ul class="gap-10 mr-5 uppercase lg:flex">
+                                <!-- Liens du menu principal -->
+                                <li class="p-2 py-3 font-bold "><a href="#">Promotions</a></li>
+                                <li class="p-2 py-3 font-medium text-slate-600 hover:text-black"><a href="#">Médicaments</a></li>
+                                <li class="p-2 py-3 font-medium text-slate-600 hover:text-black"><a href="#">Vétérinaire</a></li>
+                                <li class="p-2 py-3 font-medium text-slate-600 hover:text-black"><a href="#">Minceur</a></li>
+                                <li class="p-2 py-3 font-medium text-slate-600 hover:text-black"><a href="#">Hygiène</a></li>
+                            </ul>
+
+                            <div class="lg:flex">
+                                <!-- Icône du panier et bouton de connexion -->
+                                <div class="flex items-center w-screen p-2 py-3 mr-6 lg:w-auto ">
+                                    <button><img class="w-5 h-5 mr-2" src="<%= panier %>" alt="panier"></button>
+                                </div>
+
+                                <div class="flex items-center p-2 py-3">
+                                    <% if (utilisateur) { %>
+                                        <!-- Bouton de déconnexion pour les utilisateurs connectés -->
+                                        <form id="formDeconnexion" method="get" action="/espace_pharmaciens">
+                                            <button type="submit"><img class="w-5 h-5 mr-2" src="<%= account %>" alt="mon compte"></button>
+                                        </form>
+                                    <% } else { %>
+                                        <!-- Bouton d'ouverture de la fenêtre d'authentification pour les utilisateurs non connectés -->
+                                        <button id="btnOuvrirFenetre"><img class="w-5 h-5 mr-2" src="<%= account %>" alt="mon compte"></button>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </nav>
+
+    <!-- Fenêtre d'authentification -->
+    <div id="authentification"
+        class="fixed top-0 left-0 w-full h-full flex items-center justify-center hidden">
+        <div
+            class="bg-white p-8 rounded-md shadow-md w-96">
+            <div class="flex justify-end">
+                <!-- Bouton de fermeture de la fenêtre d'authentification -->
+                <img src="<%= croix %>" alt="Fermer" class="w-6 h-6 cursor-pointer" id="btnFermerFenetre">
+            </div>
+            <h2 class="text-2xl font-bold mb-4 text-center">Authentification</h2>
+            <form id="connexionForm" onsubmit="connexionUtilisateur(); return false;">
+                <div class="mb-4">
+                    <label for="pseudo" class="block text-sm font-medium text-gray-700">Identifiant</label>
+                    <!-- Champ de saisie de l'identifiant -->
+                    <input type="text" id="pseudo" placeholder="Votre identifiant..."
+                        class="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
+                        required>
+                </div>
+                <div class="mb-4">
+                    <label for="mdp" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+                    <!-- Champ de saisie du mot de passe -->
+                    <input type="password" id="mdp" placeholder="Votre mot de passe..."
+                        class="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
+                        required>
+                </div>
+                <div class="flex justify-center">
+                    <!-- Bouton de connexion -->
+                    <button type="submit"
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">Connexion</button>
+                </div>
+            </form>
+            <p class="mt-4 text-sm text-center">Vous n'avez pas de compte? <a href="#" class="text-blue-500">S'inscrire</a></p>
+        </div>
+    </div>
+
+
+    <!-- Section du contenu -->
+    <div class="container mx-auto mt-8">
+
+        <!-- Section des produits en vedette -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Produits en vedette</h2>
+
+            <div class="flex flex-wrap gap-4">
+                <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+                    <!-- Produit 1 -->
+                    <img src="<%= mewing %>" alt="Produit 1" class="w-full object-cover mb-2">
+                    <p class="text-lg font-semibold">Mewing 500 milligrammes</p>
+                    <p>Je ne peux pas parler, je suis en train de pratiquer le mewing.</p>
+                </div>
+
+                <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+                    <!-- Produit 2 -->
+                    <img src="<%= montana %>" alt="Produit 2" class="w-full object-cover mb-2">
+                    <p class="text-lg font-semibold">Cocaïne 1000 milligrammes</p>
+                    <p>La pure de Tony Montana, tu n'en trouveras pas ailleurs.</p>
+                </div>
+
+                <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+                    <!-- Produit 2 -->
+                    <img src="<%= senzu %>" alt="Produit 2" class="w-full object-cover mb-2">
+                    <p class="text-lg font-semibold">Senzu 33 milligrammes</p>
+                    <p>Ki +3, PV, ATT et DÉF +130 % pour la catégorie "Lien maître et disciple"</p>
+                </div>
+
+                <!-- Ajouter plus de produits au besoin -->
+            </div>
+        </div>
+
+        <!-- Section Conseils Santé -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Conseils Santé</h2>
+            <p class="mb-2">Restez en bonne santé avec nos conseils:</p>
+            <ul class="list-disc pl-5">
+                <li>Adoptez une alimentation équilibrée</li>
+                <li>Faites de l'exercice régulièrement</li>
+                <li>Assurez-vous de bien dormir</li>
+                <li>Gérez le stress avec des techniques de relaxation</li>
+                <li>Consultez votre pharmacien pour des conseils personnalisés</li>
+            </ul>
+        </div>
+
+        <!-- Section Promotions Spéciales -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Promotions Spéciales</h2>
+            <p class="mb-2">Découvrez nos offres exclusives pour vous:</p>
+            <ul class="list-disc pl-5">
+                <li>Réductions sur les produits de beauté</li>
+                <li>Offres spéciales sur les médicaments en vente libre</li>
+                <li>Programme de fidélité avec des récompenses</li>
+            </ul>
+        </div>
+
+        <!-- Section Questions à un Pharmacien -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Besoin de conseils personnalisés?</h2>
+            <p>Notre pharmacien en ligne est là pour vous aider. Posez vos questions et obtenez des réponses rapides!</p>
+            <button class="mt-2 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">Poser une question</button>
+        </div>
+
+        <!-- Section Contactez-nous -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Contactez-nous</h2>
+            <!-- Coordonnées de contact -->
+            <p>Adresse: 123 Rue de la Pharmacie, Ville</p>
+            <p>Téléphone: 123-456-7890</p>
+            <p>Email: info@pharmaciesautheuz.com</p>
+        </div>
+
+    </div>
+
+    <!-- Script pour gérer l'affichage de la fenêtre d'authentification -->
+    <% if (!utilisateur) { %>
+    <script>
+        const ouvrirFenetre = document.getElementById('btnOuvrirFenetre');
+        const fermerFenetre = document.getElementById('btnFermerFenetre');
+        const authentification = document.getElementById('authentification');
+
+        ouvrirFenetre.addEventListener('click', () => {
+            authentification.classList.remove('hidden');
+        });
+
+        fermerFenetre.addEventListener('click', () => {
+            authentification.classList.add('hidden');
+        });
+
+        async function connexionUtilisateur() {
+            const pseudo = document.getElementById('pseudo').value;
+            const mdp = document.getElementById('mdp').value;
+
+            const response = await fetch('http://localhost:3001/connexion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    pseudo,
+                    mdp
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                window.history.replaceState({}, document.title, window.location.href);
+            }
+
+            if (response.status === 200) {
+                window.location.href = '/espace_pharmaciens';
+            } else {
+                alert(data.message);
+            }
+        }
+    </script>
+    <% } %>
+
+</body>
+
+</html>
